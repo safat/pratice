@@ -1,42 +1,53 @@
 package basic;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.text.DecimalFormat;
+import java.io.*;
 
 public class Main {
 
-//    public static void test(String test) {
-//
-//    }
-//
-//    public static void test(Integer test) {
-//
-//    }
+    public static void main(String[] args) throws IOException {
+        BufferedReader eOutputReader = new BufferedReader(new InputStreamReader(new FileInputStream("/Users/muhossain/Downloads/output.txt")));
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(new FileInputStream("/Users/muhossain/Downloads/input.txt")));
+        inputReader.readLine();
+        BufferedReader outputReader = new BufferedReader(new InputStreamReader(new FileInputStream("output.txt")));
 
-    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+        while (true) {
+            String input = inputReader.readLine();
+            String expectedOutput = eOutputReader.readLine();
+            String output = outputReader.readLine();
 
-        final String pattern = ".####";
-        //final String pattern = "###,###,##0.00";
-        String output = new DecimalFormat(".####").format(12.22);
-//        final String output = myFormatter.format(12.12123123);
+            if (expectedOutput == null || output == null) {
+                break;
+            }
 
-        System.out.println(output);
+            if (!expectedOutput.equals(output)) {
+                System.out.println("expected: " + expectedOutput + " found: " + output + " when input: " + input);
+            }
+        }
+    }
 
-        int[] numbers = {1, 10, 20, 50, 100, 180};
+    static class Student {
+        private int marks;
+        private String studentName;
 
-        int index = BinarySearch.binarySearch(numbers,  180);
+        public int getMarks() {
+            return marks;
+        }
 
-        System.out.println(index);
+        public void setMarks(int marks) {
+            this.marks = marks;
+        }
 
-        String s = "অক্ষর";
+        public String getStudentName() {
+            return studentName;
+        }
 
-        PrintWriter success = new PrintWriter("abc.txt", "UTF-16");
+        public void setStudentName(String studentName) {
+            this.studentName = studentName;
+        }
 
-        success.println("অক্ষর");
-        success.close();
-
-//        new Main().test(null);
+        public Student(String studentName, int marks) {
+            this.marks = marks;
+            this.studentName = studentName;
+        }
     }
 }

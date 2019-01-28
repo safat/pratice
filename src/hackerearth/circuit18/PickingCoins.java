@@ -42,7 +42,7 @@ public class PickingCoins {
 
     private static boolean aWins(BigInteger n, BigInteger k) {
         if (k.equals(BigInteger.ONE)) {
-            return !n.mod(BigInteger.TWO).equals(BigInteger.ZERO);
+            return !n.mod(BigInteger.valueOf(2)).equals(BigInteger.ZERO);
         }
 
         for (int i = 1; i < 60; i++) {
