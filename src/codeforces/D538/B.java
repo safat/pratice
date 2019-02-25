@@ -1,56 +1,56 @@
-package codeforces.D1107;
+package codeforces.D538;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
-public class C {
+public class B {
     public static void main(String[] args) {
         FastScanner fs = new FastScanner(System.in);
-        int n = fs.nextInt();
+
+        long n = fs.nextInt();
+        int m = fs.nextInt();
         int k = fs.nextInt();
 
-        int[] damages = new int[n];
+        List<Item> itemList = new ArrayList<>();
 
-        for (int i = 0; i < n; i++) {
-            damages[i] = fs.nextInt();
+        for (int i = 1; i <= n; i++) {
+            itemList.add(new Item(fs.nextInt(), i));
         }
 
-        String actionStr = fs.nextLine();
+        itemList.sort((i1, i2) -> i2.value - i1.value);
+
         BigInteger result = BigInteger.ZERO;
 
+        List<Item> filteredItems = new ArrayList<>();
 
-        for (int i = 1; i <= actionStr.length(); i++) {
-            char last = actionStr.charAt(i - 1);
-            List<Integer> cDamageList = new ArrayList<>();
-
-            cDamageList.add(damages[i - 1]);
-
-            while (i < actionStr.length() && actionStr.charAt(i) == last) {
-                cDamageList.add(damages[i]);
-                i++;
-            }
-
-            if (cDamageList.size() > k) {
-                Collections.sort(cDamageList);
-            }
-
-            int actionProcessed = 0;
-
-            for (int j = cDamageList.size() - 1; j >= 0 && actionProcessed < k; j--) {
-                result = result.add(BigInteger.valueOf((long) cDamageList.get(j)));
-
-                actionProcessed++;
-            }
+        for (int i = 0; i < m * k; i++) {
+            result = result.add(BigInteger.valueOf(itemList.get(i).value));
+            filteredItems.add(itemList.get(i));
         }
 
-        System.out.println(result);
+        filteredItems.sort(Comparator.comparingInt(i -> i.index));
+
+        StringBuilder output = new StringBuilder();
+
+        for (int i = m - 1, count = 0; count < k - 1; i += m, count++) {
+            output.append(filteredItems.get(i).index).append(" ");
+        }
+
+        System.out.println(result.toString());
+        System.out.println(output);
+    }
+
+    static class Item {
+        int value, index;
+
+        public Item(int value, int index) {
+            this.value = value;
+            this.index = index;
+        }
     }
 
     static class FastScanner {

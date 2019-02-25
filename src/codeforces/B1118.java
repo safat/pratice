@@ -1,56 +1,50 @@
-package codeforces.D1107;
+//package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.StringTokenizer;
 
-public class C {
+public class B1118 {
     public static void main(String[] args) {
         FastScanner fs = new FastScanner(System.in);
+
         int n = fs.nextInt();
-        int k = fs.nextInt();
 
-        int[] damages = new int[n];
+        long[] items = new long[n + 1];
+        long[][] cumSum = new long[n + 1][2]; //0 even, 1 = odd
+        long oddSum = 0;
+        long evenSum = 0;
 
-        for (int i = 0; i < n; i++) {
-            damages[i] = fs.nextInt();
+        for (int i = 1; i <= n; i++) {
+            items[i] = fs.nextLong();
+
+            if (i % 2 == 0) {
+                evenSum += items[i];
+            } else {
+                oddSum += items[i];
+            }
+
+            cumSum[i][0] = evenSum;
+            cumSum[i][1] = oddSum;
         }
 
-        String actionStr = fs.nextLine();
-        BigInteger result = BigInteger.ZERO;
+        int count = 0;
 
+        for (int i = 1; i <= n; i++) {
+            long leftOddSum = cumSum[i - 1][1];
+            long leftEvenSum = cumSum[i - 1][0];
 
-        for (int i = 1; i <= actionStr.length(); i++) {
-            char last = actionStr.charAt(i - 1);
-            List<Integer> cDamageList = new ArrayList<>();
+            long rightOddSum = cumSum[n][1] - cumSum[i][1];
+            long rightEvenSum = cumSum[n][0] - cumSum[i][0];
 
-            cDamageList.add(damages[i - 1]);
-
-            while (i < actionStr.length() && actionStr.charAt(i) == last) {
-                cDamageList.add(damages[i]);
-                i++;
-            }
-
-            if (cDamageList.size() > k) {
-                Collections.sort(cDamageList);
-            }
-
-            int actionProcessed = 0;
-
-            for (int j = cDamageList.size() - 1; j >= 0 && actionProcessed < k; j--) {
-                result = result.add(BigInteger.valueOf((long) cDamageList.get(j)));
-
-                actionProcessed++;
+            if (leftEvenSum + rightOddSum == leftOddSum + rightEvenSum) {
+                count++;
             }
         }
 
-        System.out.println(result);
+        System.out.println(count);
     }
 
     static class FastScanner {

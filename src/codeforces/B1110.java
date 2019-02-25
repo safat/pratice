@@ -1,56 +1,43 @@
-package codeforces.D1107;
+//package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class C {
+public class B1110 {
+
     public static void main(String[] args) {
         FastScanner fs = new FastScanner(System.in);
         int n = fs.nextInt();
+        int m = fs.nextInt(); // length of the stick
         int k = fs.nextInt();
 
-        int[] damages = new int[n];
+        int[] segments = new int[n];
+
+        List<Integer> nonBrokenSegments = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
-            damages[i] = fs.nextInt();
-        }
+            segments[i] = fs.nextInt();
 
-        String actionStr = fs.nextLine();
-        BigInteger result = BigInteger.ZERO;
-
-
-        for (int i = 1; i <= actionStr.length(); i++) {
-            char last = actionStr.charAt(i - 1);
-            List<Integer> cDamageList = new ArrayList<>();
-
-            cDamageList.add(damages[i - 1]);
-
-            while (i < actionStr.length() && actionStr.charAt(i) == last) {
-                cDamageList.add(damages[i]);
-                i++;
-            }
-
-            if (cDamageList.size() > k) {
-                Collections.sort(cDamageList);
-            }
-
-            int actionProcessed = 0;
-
-            for (int j = cDamageList.size() - 1; j >= 0 && actionProcessed < k; j--) {
-                result = result.add(BigInteger.valueOf((long) cDamageList.get(j)));
-
-                actionProcessed++;
+            if (i > 0) {
+                nonBrokenSegments.add(segments[i] - segments[i - 1] - 1);
             }
         }
 
-        System.out.println(result);
+        Collections.sort(nonBrokenSegments);
+
+        int totalCoveredLength = n;
+
+        for (int i = 0; i < n - k; i++) {
+            totalCoveredLength += nonBrokenSegments.get(i);
+        }
+
+        System.out.println(totalCoveredLength);
     }
 
     static class FastScanner {

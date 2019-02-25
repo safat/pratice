@@ -1,56 +1,45 @@
-package codeforces.D1107;
+package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.StringTokenizer;
 
-public class C {
+public class A1110 {
     public static void main(String[] args) {
         FastScanner fs = new FastScanner(System.in);
-        int n = fs.nextInt();
+        int b = fs.nextInt();
         int k = fs.nextInt();
 
-        int[] damages = new int[n];
+        int[] digits = new int[k];
 
-        for (int i = 0; i < n; i++) {
-            damages[i] = fs.nextInt();
+        for (int i = digits.length - 1; i >= 0; i--) {
+            digits[i] = fs.nextInt();
         }
 
-        String actionStr = fs.nextLine();
-        BigInteger result = BigInteger.ZERO;
+        boolean even = false;
 
+        if (b % 2 == 0) {
 
-        for (int i = 1; i <= actionStr.length(); i++) {
-            char last = actionStr.charAt(i - 1);
-            List<Integer> cDamageList = new ArrayList<>();
+            if (digits[0] % 2 == 0) {
+                even = true;
+            }
+        } else {
+            int oddCount = 0;
 
-            cDamageList.add(damages[i - 1]);
-
-            while (i < actionStr.length() && actionStr.charAt(i) == last) {
-                cDamageList.add(damages[i]);
-                i++;
+            for (int d : digits) {
+                if (d % 2 != 0) {
+                    oddCount++;
+                }
             }
 
-            if (cDamageList.size() > k) {
-                Collections.sort(cDamageList);
-            }
-
-            int actionProcessed = 0;
-
-            for (int j = cDamageList.size() - 1; j >= 0 && actionProcessed < k; j--) {
-                result = result.add(BigInteger.valueOf((long) cDamageList.get(j)));
-
-                actionProcessed++;
+            if (oddCount % 2 == 0) {
+                even = true;
             }
         }
 
-        System.out.println(result);
+        System.out.println(even ? "even" : "odd");
     }
 
     static class FastScanner {

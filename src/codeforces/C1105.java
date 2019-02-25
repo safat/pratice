@@ -1,56 +1,41 @@
-package codeforces.D1107;
+package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.StringTokenizer;
 
-public class C {
+public class C1105 {
     public static void main(String[] args) {
         FastScanner fs = new FastScanner(System.in);
         int n = fs.nextInt();
-        int k = fs.nextInt();
+        int l = fs.nextInt();
+        int r = fs.nextInt();
 
-        int[] damages = new int[n];
+//        R/3-(L-1)/3,
+//                (R+2)/3-(L+1)/3,
+//                (R+1)/3-(L)/3
 
-        for (int i = 0; i < n; i++) {
-            damages[i] = fs.nextInt();
+        long m0 = (long) (Math.floor(r / 3.0) - Math.floor(l / 3.0)) + (l % 3 == 0 ? 1 : 0);
+        long m1 = (long) (Math.floor((r + 2) / 3.0) - Math.floor((l + 2) / 3.0)) + (l % 3 == 1 ? 1 : 0);
+        long m2 = (long) (Math.floor((r + 1) / 3.0) - Math.floor((l + 1) / 3.0)) + (l % 3 == 2 ? 1 : 0);
+
+
+        long[][] dp = new long[n + 1][3];
+
+        dp[1][0] = m0;
+        dp[1][1] = m1;
+        dp[1][2] = m2;
+        long max = (long) Math.pow(10, 9) + 7;
+
+        for (int i = 2; i <= n; i++) {
+            dp[i][0] = (dp[i - 1][0] * m0 + dp[i - 1][1] * m2 + dp[i - 1][2] * m1) % max;
+            dp[i][1] = (dp[i - 1][0] * m1 + dp[i - 1][2] * m2 + dp[i - 1][1] * m0) % max;
+            dp[i][2] = (dp[i - 1][0] * m2 + dp[i - 1][1] * m1 + dp[i - 1][2] * m0) % max;
         }
 
-        String actionStr = fs.nextLine();
-        BigInteger result = BigInteger.ZERO;
-
-
-        for (int i = 1; i <= actionStr.length(); i++) {
-            char last = actionStr.charAt(i - 1);
-            List<Integer> cDamageList = new ArrayList<>();
-
-            cDamageList.add(damages[i - 1]);
-
-            while (i < actionStr.length() && actionStr.charAt(i) == last) {
-                cDamageList.add(damages[i]);
-                i++;
-            }
-
-            if (cDamageList.size() > k) {
-                Collections.sort(cDamageList);
-            }
-
-            int actionProcessed = 0;
-
-            for (int j = cDamageList.size() - 1; j >= 0 && actionProcessed < k; j--) {
-                result = result.add(BigInteger.valueOf((long) cDamageList.get(j)));
-
-                actionProcessed++;
-            }
-        }
-
-        System.out.println(result);
+        System.out.println(dp[n][0]);
     }
 
     static class FastScanner {

@@ -7,9 +7,7 @@ import java.util.Set;
 
 public class RegistrationSystem {
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("/Users/muhossain/Downloads/input.txt")));
-        PrintStream out = new PrintStream(new FileOutputStream("output.txt"));
-        System.setOut(out);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int n = Integer.parseInt(br.readLine());
 
@@ -49,12 +47,35 @@ public class RegistrationSystem {
 
             String newNodeKey = null;
 
-            Set<String> childNodes = lastNode.nodeMap.keySet();
+            boolean found = false;
+            int x = 1;
 
-            for (int i = 0; ; i++) {
-                if (!childNodes.contains(String.valueOf(i))) {
-                    newNodeKey = String.valueOf(i);
-                    break;
+            while (!found) {
+                Set<String> childNodes = lastNode.nodeMap.keySet();
+
+                for (int i = 0; i <= 9; i++) {
+                    if (!childNodes.contains(String.valueOf(i))) {
+                        newNodeKey = String.valueOf(i);
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    if (x > 9) {
+                        x = 1;
+                    }
+
+                    Node tmpNode = lastNode.nodeMap.get(x);
+
+                    if (tmpNode == null) {
+                        newNodeKey = String.valueOf(x);
+                        break;
+                    } else {
+                        lastNode = tmpNode;
+                    }
+
+                    x++;
                 }
             }
 

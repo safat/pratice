@@ -1,56 +1,45 @@
-package codeforces.D1107;
+package codeforces.D539;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class C {
+public class B {
+
     public static void main(String[] args) {
         FastScanner fs = new FastScanner(System.in);
-        int n = fs.nextInt();
-        int k = fs.nextInt();
 
-        int[] damages = new int[n];
+        int n = fs.nextInt();
+
+        int[] powers = new int[n];
+        int result = 0;
 
         for (int i = 0; i < n; i++) {
-            damages[i] = fs.nextInt();
+            powers[i] = fs.nextInt();
+
+            result += powers[i];
         }
 
-        String actionStr = fs.nextLine();
-        BigInteger result = BigInteger.ZERO;
+        Arrays.sort(powers);
 
+        int minResult = result;
 
-        for (int i = 1; i <= actionStr.length(); i++) {
-            char last = actionStr.charAt(i - 1);
-            List<Integer> cDamageList = new ArrayList<>();
+        for (int i = 1; i < powers.length; i++) {
+            int tmpResult;
 
-            cDamageList.add(damages[i - 1]);
+            for (int j = 2; j <= Math.sqrt(powers[i]); j++) {
+                if (powers[i] % j == 0) {
+                    tmpResult = result - powers[0] - powers[i] + powers[i] / j + powers[0] * j;
 
-            while (i < actionStr.length() && actionStr.charAt(i) == last) {
-                cDamageList.add(damages[i]);
-                i++;
-            }
-
-            if (cDamageList.size() > k) {
-                Collections.sort(cDamageList);
-            }
-
-            int actionProcessed = 0;
-
-            for (int j = cDamageList.size() - 1; j >= 0 && actionProcessed < k; j--) {
-                result = result.add(BigInteger.valueOf((long) cDamageList.get(j)));
-
-                actionProcessed++;
+                    minResult = Math.min(minResult, tmpResult);
+                }
             }
         }
 
-        System.out.println(result);
+        System.out.println(minResult);
     }
 
     static class FastScanner {
