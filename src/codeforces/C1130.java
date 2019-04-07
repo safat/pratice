@@ -1,12 +1,13 @@
 package codeforces;
 
-import com.sun.org.apache.bcel.internal.generic.FASTORE;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.StringTokenizer;
 
 public class C1130 {
@@ -31,51 +32,61 @@ public class C1130 {
             }
         }
 
-        boolean[][] visited = new boolean[n + 1][n + 1];
-//        visited[r1][c1] = true;
+        List<Index> S = new ArrayList<>();
+        List<Index> T = new ArrayList<>();
 
-        int result = findMinWaterDistance(grid, r1, c1, r2, c2, visited, 0, -1, -1);
+        boolean[][] visitedS = new boolean[n + 1][n + 1];
+        boolean[][] visitedT = new boolean[n + 1][n + 1];
 
-        System.out.println(result);
+        findAccessibleNodes(grid, visitedS, S, r1, c1);
+        findAccessibleNodes(grid, visitedT, T, r2, c2);
+
+        int distance = 0;
+
+        if (!equalsX(S, T)) {
+            distance = Integer.MAX_VALUE;
+
+            for (int i = 0; i < S.size(); i++) {
+                for (int j = 0; j < T.size(); j++) {
+                    int tmpDistance = (int) (Math.pow(S.get(i).row - T.get(j).row, 2) + Math.pow(S.get(i).col - T.get(j).col, 2));
+                    distance = Math.min(tmpDistance, distance);
+                }
+            }
+        }
+
+        System.out.println(distance);
     }
 
-    private static int findMinWaterDistance(int[][] grid, int r1, int c1, int r2, int c2, boolean[][] visited, int distance, int wr1, int wc1) {
-        if (r1 >= grid.length || r1 <= 0 || c1 >= grid.length || c1 <= 0) {
-            return Integer.MAX_VALUE;
+    private static boolean equalsX(List<Index> s, List<Index> t) {
+        if (s.size() != t.size()) {
+            return false;
         }
 
-        if (visited[r1][c1]) {
-            return Integer.MAX_VALUE;
-        }
-
-        if (r1 == r2 && c1 == c2) {
-            return distance;
-        }
-
-        if (grid[r1][c1] == 1) {
-            if (distance > 0) {
-                return Integer.MAX_VALUE;
-            }
-
-            if (wr1 == -1) {
-                wr1 = r1;
-                wc1 = c1;
-            }
-        } else {
-
-            if (wr1 != -1) {
-                distance = (int) (Math.pow(wr1 - r1 + 1, 2) + Math.pow(wc1 - c1 + 1, 2));
+        for (int i = 0; i < s.size(); i++) {
+            if (!s.get(i).equals(t.get(i))) {
+                return false;
             }
         }
 
+        return true;
+    }
+
+
+    private static void findAccessibleNodes(int[][] grid, boolean[][] visited, List<Index> nodes, int r1, int c1) {
+        if (r1 <= 0 || r1 >= grid.length ||
+                c1 <= 0 || c1 >= grid.length ||
+                grid[r1][c1] == 1 ||
+                visited[r1][c1]) {
+            return;
+        }
+
+        nodes.add(new Index(r1, c1));
         visited[r1][c1] = true;
 
-        return minx(
-                findMinWaterDistance(grid, r1, c1 + 1, r2, c2, visited, distance, wr1, wc1), // right
-                findMinWaterDistance(grid, r1, c1 - 1, r2, c2, visited, distance, wr1, wc1), // left
-                findMinWaterDistance(grid, r1 - 1, c1, r2, c2, visited, distance, wr1, wc1), // up
-                findMinWaterDistance(grid, r1 + 1, c1, r2, c2, visited, distance, wr1, wc1) // down
-        );
+        findAccessibleNodes(grid, visited, nodes, r1, c1 + 1); // r
+        findAccessibleNodes(grid, visited, nodes, r1, c1 - 1); // l
+        findAccessibleNodes(grid, visited, nodes, r1 - 1, c1); // u
+        findAccessibleNodes(grid, visited, nodes, r1 + 1, c1); // d
     }
 
     private static int minx(int... items) {
@@ -124,4 +135,40 @@ public class C1130 {
         }
     }
 
+    private static class Index implements Comparable<Index> {
+        int row;
+        int col;
+
+        public Index(int row, int col) {
+            this.row = row;
+            this.col = col;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Index index = (Index) o;
+            return row == index.row &&
+                    col == index.col;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(row, col);
+        }
+
+        @Override
+        public String toString() {
+            return "Index{" +
+                    "row=" + row +
+                    ", col=" + col +
+                    '}';
+        }
+
+        @Override
+        public int compareTo(Index o) {
+            return this.row == o.row ? this.col - o.col : this.row - o.row;
+        }
+    }
 }

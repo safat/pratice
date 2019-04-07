@@ -1,58 +1,39 @@
-package codeforces.D1107;
+//package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.StringTokenizer;
 
-public class C {
+public class B1131 {
     public static void main(String[] args) {
-
-        String x = null;
-
-        System.out.println(x + "");
-
         FastScanner fs = new FastScanner(System.in);
         int n = fs.nextInt();
-        int k = fs.nextInt();
 
-        int[] damages = new int[n];
+        long result = 1;
+        int s1 = 0;
+        int s2 = 0;
 
         for (int i = 0; i < n; i++) {
-            damages[i] = fs.nextInt();
-        }
+            int e1 = fs.nextInt();
+            int e2 = fs.nextInt();
 
-        String actionStr = fs.nextLine();
-        BigInteger result = BigInteger.ZERO;
+            int maxStart = Math.max(s1, s2);
+            int minEnd = Math.min(e1, e2);
 
+            long draws = 0;
 
-        for (int i = 1; i <= actionStr.length(); i++) {
-            char last = actionStr.charAt(i - 1);
-            List<Integer> cDamageList = new ArrayList<>();
-
-            cDamageList.add(damages[i - 1]);
-
-            while (i < actionStr.length() && actionStr.charAt(i) == last) {
-                cDamageList.add(damages[i]);
-                i++;
+            if (s1 == s2) {
+                draws = Math.max(minEnd - maxStart, 0);
+            } else {
+                draws = Math.max(minEnd - maxStart + 1, 0);
             }
 
-            if (cDamageList.size() > k) {
-                Collections.sort(cDamageList);
-            }
+            result += draws;
 
-            int actionProcessed = 0;
-
-            for (int j = cDamageList.size() - 1; j >= 0 && actionProcessed < k; j--) {
-                result = result.add(BigInteger.valueOf((long) cDamageList.get(j)));
-
-                actionProcessed++;
-            }
+            s1 = e1;
+            s2 = e2;
         }
 
         System.out.println(result);

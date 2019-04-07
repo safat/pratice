@@ -1,61 +1,28 @@
-package codeforces.D1107;
+package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class C {
+public class A1132 {
     public static void main(String[] args) {
-
-        String x = null;
-
-        System.out.println(x + "");
-
         FastScanner fs = new FastScanner(System.in);
-        int n = fs.nextInt();
-        int k = fs.nextInt();
 
-        int[] damages = new int[n];
+        List<String> test = Arrays.asList("test", "x");
 
-        for (int i = 0; i < n; i++) {
-            damages[i] = fs.nextInt();
+        System.out.println(test.contains(null));
+
+        int[] inputs = new int[4];
+
+        for (int i = 0; i < inputs.length; i++) {
+            inputs[i] = fs.nextInt();
         }
 
-        String actionStr = fs.nextLine();
-        BigInteger result = BigInteger.ZERO;
-
-
-        for (int i = 1; i <= actionStr.length(); i++) {
-            char last = actionStr.charAt(i - 1);
-            List<Integer> cDamageList = new ArrayList<>();
-
-            cDamageList.add(damages[i - 1]);
-
-            while (i < actionStr.length() && actionStr.charAt(i) == last) {
-                cDamageList.add(damages[i]);
-                i++;
-            }
-
-            if (cDamageList.size() > k) {
-                Collections.sort(cDamageList);
-            }
-
-            int actionProcessed = 0;
-
-            for (int j = cDamageList.size() - 1; j >= 0 && actionProcessed < k; j--) {
-                result = result.add(BigInteger.valueOf((long) cDamageList.get(j)));
-
-                actionProcessed++;
-            }
-        }
-
-        System.out.println(result);
+        System.out.println(inputs[0] == inputs[3] && (inputs[2] == 0 || inputs[0] != 0) ? 1 : 0);
     }
 
     static class FastScanner {

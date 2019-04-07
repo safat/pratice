@@ -1,57 +1,63 @@
-package codeforces.D1107;
+package codeforces.AAA;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
-public class C {
+public class A {
+
     public static void main(String[] args) {
-
-        String x = null;
-
-        System.out.println(x + "");
-
         FastScanner fs = new FastScanner(System.in);
         int n = fs.nextInt();
+        int m = fs.nextInt();
         int k = fs.nextInt();
 
-        int[] damages = new int[n];
+        int[] p = new int[n + 1];
+        int[] sch = new int[n + 1];
 
-        for (int i = 0; i < n; i++) {
-            damages[i] = fs.nextInt();
+        for (int i = 1; i <= n; i++) {
+            p[i] = fs.nextInt();
         }
 
-        String actionStr = fs.nextLine();
-        BigInteger result = BigInteger.ZERO;
+        Map<Integer, List<Integer>> powerMap = new HashMap<>();
 
+        for (int i = 1; i <= n; i++) {
+            int s = fs.nextInt();
 
-        for (int i = 1; i <= actionStr.length(); i++) {
-            char last = actionStr.charAt(i - 1);
-            List<Integer> cDamageList = new ArrayList<>();
+            sch[i] = s;
 
-            cDamageList.add(damages[i - 1]);
+            powerMap.putIfAbsent(s, new ArrayList<>());
+            powerMap.get(s).add(p[i]);
+        }
 
-            while (i < actionStr.length() && actionStr.charAt(i) == last) {
-                cDamageList.add(damages[i]);
-                i++;
-            }
+        int[] q = new int[k + 1];
 
-            if (cDamageList.size() > k) {
-                Collections.sort(cDamageList);
-            }
+        for (int i = 1; i <= k; i++) {
+            q[i] = fs.nextInt();
+        }
 
-            int actionProcessed = 0;
+        for (List<Integer> values : powerMap.values()) {
+            Collections.sort(values);
+        }
 
-            for (int j = cDamageList.size() - 1; j >= 0 && actionProcessed < k; j--) {
-                result = result.add(BigInteger.valueOf((long) cDamageList.get(j)));
+        int result = 0;
 
-                actionProcessed++;
+        for (int i = 1; i <= k; i++) {
+            int id = q[i];
+            int power = p[id];
+            int school = sch[id];
+
+            List<Integer> powerList = powerMap.get(school);
+
+            if (power < powerList.get(powerList.size() - 1)) {
+                result++;
             }
         }
 

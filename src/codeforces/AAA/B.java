@@ -1,61 +1,48 @@
-package codeforces.D1107;
+package codeforces.AAA;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
-public class C {
+public class B {
+
     public static void main(String[] args) {
-
-        String x = null;
-
-        System.out.println(x + "");
-
         FastScanner fs = new FastScanner(System.in);
         int n = fs.nextInt();
-        int k = fs.nextInt();
 
-        int[] damages = new int[n];
+        List<Integer> sweets = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
-            damages[i] = fs.nextInt();
+            int swt = fs.nextInt();
+            sweets.add(swt);
         }
 
-        String actionStr = fs.nextLine();
-        BigInteger result = BigInteger.ZERO;
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        int maxPair = 0;
 
+        for (int i = 0; i < sweets.size(); i++) {
+            for (int j = i + 1; j < sweets.size(); j++) {
+                Integer freq = frequencyMap.get(sweets.get(i) + sweets.get(j));
 
-        for (int i = 1; i <= actionStr.length(); i++) {
-            char last = actionStr.charAt(i - 1);
-            List<Integer> cDamageList = new ArrayList<>();
+                if (freq == null) {
+                    freq = 0;
+                }
 
-            cDamageList.add(damages[i - 1]);
+                freq++;
 
-            while (i < actionStr.length() && actionStr.charAt(i) == last) {
-                cDamageList.add(damages[i]);
-                i++;
-            }
+                frequencyMap.put(sweets.get(i) + sweets.get(j), freq);
 
-            if (cDamageList.size() > k) {
-                Collections.sort(cDamageList);
-            }
-
-            int actionProcessed = 0;
-
-            for (int j = cDamageList.size() - 1; j >= 0 && actionProcessed < k; j--) {
-                result = result.add(BigInteger.valueOf((long) cDamageList.get(j)));
-
-                actionProcessed++;
+                maxPair = Math.max(freq, maxPair);
             }
         }
 
-        System.out.println(result);
+        System.out.println(maxPair);
     }
 
     static class FastScanner {

@@ -1,61 +1,42 @@
-package codeforces.D1107;
+package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class C {
+public class B1132 {
     public static void main(String[] args) {
-
-        String x = null;
-
-        System.out.println(x + "");
-
         FastScanner fs = new FastScanner(System.in);
-        int n = fs.nextInt();
-        int k = fs.nextInt();
 
-        int[] damages = new int[n];
+        int n = fs.nextInt();
+        int[] cost = new int[n];
+
+        long total = 0;
 
         for (int i = 0; i < n; i++) {
-            damages[i] = fs.nextInt();
+            cost[i] = fs.nextInt();
+            total += cost[i];
         }
 
-        String actionStr = fs.nextLine();
-        BigInteger result = BigInteger.ZERO;
+        int q = fs.nextInt();
+        int[] coupons = new int[q];
 
-
-        for (int i = 1; i <= actionStr.length(); i++) {
-            char last = actionStr.charAt(i - 1);
-            List<Integer> cDamageList = new ArrayList<>();
-
-            cDamageList.add(damages[i - 1]);
-
-            while (i < actionStr.length() && actionStr.charAt(i) == last) {
-                cDamageList.add(damages[i]);
-                i++;
-            }
-
-            if (cDamageList.size() > k) {
-                Collections.sort(cDamageList);
-            }
-
-            int actionProcessed = 0;
-
-            for (int j = cDamageList.size() - 1; j >= 0 && actionProcessed < k; j--) {
-                result = result.add(BigInteger.valueOf((long) cDamageList.get(j)));
-
-                actionProcessed++;
-            }
+        for (int i = 0; i < q; i++) {
+            coupons[i] = fs.nextInt();
         }
 
-        System.out.println(result);
+        Arrays.sort(cost);
+
+        StringBuilder output = new StringBuilder();
+
+        for (int c : coupons) {
+            output.append(total - (c > 0 ? cost[n - c] : 0)).append("\n");
+        }
+
+        System.out.print(output);
     }
 
     static class FastScanner {
