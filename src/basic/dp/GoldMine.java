@@ -1,9 +1,17 @@
 package basic.dp;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GoldMine {
     public static void main(String[] args) {
+        Set<String> testSet = new HashSet<>();
+        testSet.add("testx");
+        testSet.add("y");
+
+        System.out.println(testSet.toString());
+
         int[][] mine = new int[][]{{10, 33, 13, 15},
                 {22, 21, 4, 1},
                 {5, 0, 2, 3},
