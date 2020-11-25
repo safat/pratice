@@ -87,7 +87,6 @@ public class SegmentTree {
             return segmentTree[node];
         }
 
-        int m = (l + h) / 2;
         int mid = (start + end) / 2;
 
         if (l >= start && h <= mid) {

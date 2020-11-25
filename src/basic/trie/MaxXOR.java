@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MaxXOR {
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(new File("input.txt")));
+        BufferedReader br = new BufferedReader(new FileReader(new File("he_fight_in_ninjaworld.txt")));
 
         String input = br.readLine();
         String[] splitedInput = input.split(" ");

@@ -1,4 +1,4 @@
-//package codeforces.D535;
+package codeforces.D535;
 
 import java.io.BufferedReader;
 import java.io.IOException;

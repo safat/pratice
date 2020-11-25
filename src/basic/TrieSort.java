@@ -9,7 +9,7 @@ public class TrieSort {
     public static void main(String[] args) throws IOException {
 //        generateData(10000000);
 
-        BufferedReader br = new BufferedReader(new FileReader(new File("input.txt")));
+        BufferedReader br = new BufferedReader(new FileReader(new File("he_fight_in_ninjaworld.txt")));
 
         String input = br.readLine();
         String[] splitedInput = input.split(" ");
@@ -139,7 +139,7 @@ public class TrieSort {
     }
 
     private static void generateData(long limit) throws IOException {
-        PrintWriter pr = new PrintWriter(new FileWriter("input.txt"));
+        PrintWriter pr = new PrintWriter(new FileWriter("he_fight_in_ninjaworld.txt"));
 
         for (int i = 0; i < limit; i++) {
             pr.append(String.valueOf((long) (Math.random() * Math.random() * Long.MAX_VALUE))).append(" ");
